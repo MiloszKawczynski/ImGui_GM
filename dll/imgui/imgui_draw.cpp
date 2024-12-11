@@ -2618,7 +2618,19 @@ ImFont* ImFontAtlas::AddFontFromFileTTF(const char* filename, float size_pixels,
         for (p = filename + strlen(filename); p > filename && p[-1] != '/' && p[-1] != '\\'; p--) {}
         ImFormatString(font_cfg.Name, IM_ARRAYSIZE(font_cfg.Name), "%s, %.0fpx", p, size_pixels);
     }
-    return AddFontFromMemoryTTF(data, (int)data_size, size_pixels, &font_cfg, glyph_ranges);
+
+    // Create a custom glyph range that always includes Polish characters
+    static const ImWchar polish_glyph_ranges[] = {
+        0x0020, 0x00FF, // Basic Latin + Latin-1 Supplement
+        0x0100, 0x017F, // Latin Extended-A (includes Polish characters)
+        0 // Null terminator
+    };
+
+    // Use the provided glyph_ranges or the custom Polish glyph range
+    const ImWchar* final_glyph_ranges = glyph_ranges ? glyph_ranges : polish_glyph_ranges;
+
+
+    return AddFontFromMemoryTTF(data, (int)data_size, size_pixels, &font_cfg, final_glyph_ranges);
 }
 
 // NB: Transfer ownership of 'ttf_data' to ImFontAtlas, unless font_cfg_template->FontDataOwnedByAtlas == false. Owned TTF buffer will be deleted after Build().
