@@ -116,7 +116,7 @@ struct RValue;
 YYCEXTERN void* YYAlloc( int _size );
 YYCEXTERN void* YYRealloc( void* _p, int _size );
 YYCEXTERN void YYFree( const void* _p );
-YYCEXTERN const char* YYStrDup( const char* _pS );
+YYCEXTERN char* YYStrDup(char* _pS);
 
 YYCEXTERN int YYstrnlen( const char* _pS, int n );
 YYCEXTERN void YYCreateString( RValue* _pVal, const char* _pS );

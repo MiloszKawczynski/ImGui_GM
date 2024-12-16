@@ -21,8 +21,8 @@ template <typename T> struct _RefFactory
 template <> struct _RefFactory< const char* >
 {
 	static const char* Alloc( const char* _thing, int _size )	{ return (const char*)YYAlloc( _size+1 ); }
-	static const char* Create(const char* _thing, int& _size) { _size = _thing ? (int)strlen(_thing) : 0; return YYStrDup(_thing); }
 	static const char* Destroy( const char* _thing ) { YYFree( (void*)_thing ); return NULL; }
+    static const char* Create(char* _thing, int& _size) { _size = _thing ? (int)strlen(_thing) : 0; return YYStrDup(_thing); }
 };
 
 // NOTE: constant strings have negative size
